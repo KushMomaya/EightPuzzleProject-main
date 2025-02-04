@@ -23,10 +23,29 @@ def general_search(initial_state, goal_state, queueing_function):
                                   
 # Expand function returns an array of valid neighbors for the node passed in
 def expand(node, operators):
+    neighbors = []
+    for i in range(3):
+        for j in range(3):
+            if node.state[i][j] == 0:
+                r = i # Row coordinate for blank
+                c = j # Column coordinate for blank
+    
+    #find neighbors from r,c position and remeber to store the states of the new ones
+    for k in operators:
+        if k == "left":
+            new_r = r - 1
+            new_c = c
+            if new_r > 2 or new_r < 0:
+                new_r = r
+        elif k == "right":
+
+        elif k == "up"
+
+        elif k == "down"
 
 # Queueing logic for uniform cost search
 def uniform_cost(nodes, neighbors):
-
+    
 # Queueing logic for A* with the manhattan distance heuristic
 def astar_manhattan(nodes, neighbors):
 
