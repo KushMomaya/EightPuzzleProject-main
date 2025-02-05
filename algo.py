@@ -6,20 +6,27 @@ def general_search(initial_state, goal_state, queueing_function):
     nodes = []
     initial_node = Node(state=initial_state)
     q.heappush(nodes, initial_node)
-
+    expanded_nodes = 0
+    max_q_size = 0
     seen = set()
 
     while nodes:
         if len(nodes) == 0:
             return "failure"
-        
+
+        max_q_size = max(max_q_size, len(nodes))
         node = q.heappop(nodes)
+        expanded_nodes += 1
 
         if node.state == goal_state:
             return node
+
+        seen.add()
         operators = ["left", "right", "up", "down"]
         neighbors = expand(node, operators)
-        nodes = queueing_function(nodes, neighbors)
+        for neighbor in neighbors:
+            if not in seen:
+                nodes = queueing_function(nodes, neighbor)
                                   
 # Expand function returns an array of valid neighbors for the node passed in
 def expand(node, operators):
@@ -57,14 +64,20 @@ def expand(node, operators):
     return neighbors
 
 # Queueing logic for uniform cost search
-def uniform_cost(nodes, neighbors):
-    
+def uniform_cost(nodes, node):
+    node.heuristic = 0 # No heuristic for uc search
+    node.f = node.cost
+    q.heappush(nodes, node) # Pushing onto priority queue uses overrided less than operator for comparison
 # Queueing logic for A* with the manhattan distance heuristic
-def astar_manhattan(nodes, neighbors):
-
+def astar_manhattan(nodes, node):
+    node.heuristic = distance_check(node.state)
+    node.f = node.cost + node.heuristic
+    q.heappush(nodes, node) # Pushing onto priority queue uses overrided less than operator for comparison
 # Queueing logic for A* with the misplaced tile heuristic
-def astar_misplaced(nodes, neighbors):
-
+def astar_misplaced(nodes, node):
+    node.heuristic = tile_check(node.state)
+    node.f = node.cost + node.heuristic
+    q.heappush(nodes, node) # Pushing onto priority queue uses overrided less than operator for comparison
 # Check the current amount of tiles in the wrong position    
 def tile_check(state):
     count = 0
