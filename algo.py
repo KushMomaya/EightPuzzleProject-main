@@ -33,15 +33,28 @@ def expand(node, operators):
     #find neighbors from r,c position and remeber to store the states of the new ones
     for k in operators:
         if k == "left":
-            new_r = r - 1
-            new_c = c
-            if new_r > 2 or new_r < 0:
+            if 0 < c <= 2:
                 new_r = r
+                new_c = c - 1
         elif k == "right":
-
-        elif k == "up"
-
-        elif k == "down"
+            if 0 <= c < 2:
+                new_r = r
+                new_c = c + 1
+        elif k == "up":
+            if 0 < r <= 2:
+                new_r = r - 1
+                new_c = c
+        elif k == "down":
+            if 0 <= c < 2:
+                new_r = r + 1
+                new_c = c
+        
+        new_state = node.state
+        new_state[r][c], new_state[new_r][new_c] = new_state[new_r][new_c], new_state[r][c]
+        neighbor = Node(state= new_state, cost= node.cost + 1)
+        neighbors.append(neighbor)
+    
+    return neighbors
 
 # Queueing logic for uniform cost search
 def uniform_cost(nodes, neighbors):
