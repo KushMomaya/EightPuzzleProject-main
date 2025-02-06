@@ -8,7 +8,7 @@ def general_search(initial_state, goal_state, queueing_function):
     q.heappush(nodes, initial_node)
     expanded_nodes = 0
     max_q_size = 0
-    seen = set()
+    seen = []
 
     while nodes:
         if len(nodes) == 0:
@@ -17,15 +17,17 @@ def general_search(initial_state, goal_state, queueing_function):
         max_q_size = max(max_q_size, len(nodes))
         node = q.heappop(nodes)
         expanded_nodes += 1
-
+        if(node not in seen):
+            q.heappush(seen, node)
+            
         if node.state == goal_state:
             return node
 
-        seen.add()
+        seen.add(node)
         operators = ["left", "right", "up", "down"]
         neighbors = expand(node, operators)
         for neighbor in neighbors:
-            if not in seen:
+            if neighbor not in seen:
                 nodes = queueing_function(nodes, neighbor)
                                   
 # Expand function returns an array of valid neighbors for the node passed in
@@ -95,3 +97,16 @@ def tile_check(state):
 
 # Check the total distance of each tile from its current state
 def distance_check(state):
+    static = {
+        1: (0,0), 2: (0,1), 3: (0,2),
+        4: (1,0), 5: (1,1), 6: (1,2),
+        7: (2,0), 8: (2,1), 0: (2,2)
+    }
+    distance = 0
+    for i in range(3):
+        for j in range(3):
+            curr = state[i][j]
+            if curr != 0:
+                goalx, goaly = curr[i][j]
+                distance += abs(goalx - i) + abs(goaly - j)
+    return distance
