@@ -8,6 +8,7 @@ def general_search(initial_state, goal_state, queueing_function):
     q.heappush(nodes, initial_node)
     expanded_nodes = 0
     max_q_size = 0
+    frontier = 1
     seen = []
 
     while nodes:
@@ -16,19 +17,24 @@ def general_search(initial_state, goal_state, queueing_function):
 
         max_q_size = max(max_q_size, len(nodes))
         node = q.heappop(nodes)
-        expanded_nodes += 1
-        if(node not in seen):
-            q.heappush(seen, node)
-            
+        frontier = len(nodes)
+
         if node.state == goal_state:
+            print("Nodes Expanded: " + str(expanded_nodes))
+            print("Maximum Queue Size: " + str(max_q_size))
+            print("Frontier: " + str(frontier))
+            print("Depth: " + str(node.cost))
             return node
 
-        seen.add(node)
+        
         operators = ["left", "right", "up", "down"]
-        neighbors = expand(node, operators)
-        for neighbor in neighbors:
-            if neighbor not in seen:
-                nodes = queueing_function(nodes, neighbor)
+        if node not in seen:
+            q.heappush(seen, node)
+            neighbors = expand(node, operators)
+            expanded_nodes += 1
+            for neighbor in neighbors:
+                if neighbor not in seen:
+                    queueing_function(nodes, neighbor)
                                   
 # Expand function returns an array of valid neighbors for the node passed in
 def expand(node, operators):
@@ -41,28 +47,21 @@ def expand(node, operators):
     
     #find neighbors from r,c position and remeber to store the states of the new ones
     for k in operators:
-        if k == "left":
-            if 0 < c <= 2:
-                new_r = r
-                new_c = c - 1
-        elif k == "right":
-            if 0 <= c < 2:
-                new_r = r
-                new_c = c + 1
-        elif k == "up":
-            if 0 < r <= 2:
-                new_r = r - 1
-                new_c = c
-        elif k == "down":
-            if 0 <= c < 2:
-                new_r = r + 1
-                new_c = c
-        
-        new_state = node.state
+        new_r, new_c = r, c
+        if k == "left" and c > 0:
+            new_c = c - 1
+        elif k == "right" and c < 2:
+            new_c = c + 1
+        elif k == "up" and r > 0:
+            new_r = r - 1
+        elif k == "down" and r < 2:
+            new_r = r + 1
+        else:
+            continue
+        new_state = [row[:] for row in node.state]
         new_state[r][c], new_state[new_r][new_c] = new_state[new_r][new_c], new_state[r][c]
         neighbor = Node(state= new_state, cost= node.cost + 1)
         neighbors.append(neighbor)
-    
     return neighbors
 
 # Queueing logic for uniform cost search
@@ -90,7 +89,7 @@ def tile_check(state):
     ]
     for i in range(3):
         for j in range(3):
-            if state[i,j] != goal_state[i][j]:
+            if state[i][j] != goal_state[i][j]:
                 count = count + 1
     
     return count
@@ -107,6 +106,6 @@ def distance_check(state):
         for j in range(3):
             curr = state[i][j]
             if curr != 0:
-                goalx, goaly = curr[i][j]
+                goalx, goaly = static[curr]
                 distance += abs(goalx - i) + abs(goaly - j)
     return distance

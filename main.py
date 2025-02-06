@@ -79,12 +79,14 @@ def main():
     print("Select which algorithm to use: 1 = Uniform Cost, 2 = A* Misplaced Tile, 3 = A* Manhattan Distance")
     algo_choice = input().strip()
     #run algorithm with initial state
-    if algo_choice == 1:
+    if algo_choice == "1":
         general_search(initial_state, goal_state, uniform_cost)
-    elif algo_choice == 2:
+    elif algo_choice == "2":
         general_search(initial_state, goal_state, astar_misplaced)
-    elif algo_choice == 3:
+    elif algo_choice == "3":
         general_search(initial_state, goal_state, astar_manhattan)
     else:
         print("Invalid Input")
     #some display of solution
+
+main()
