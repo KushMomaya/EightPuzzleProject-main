@@ -9,7 +9,7 @@ def general_search(initial_state, goal_state, queueing_function):
     expanded_nodes = 0
     max_q_size = 0
     frontier = 1
-    seen = []
+    seen = set()
 
     while nodes:
         if len(nodes) == 0:
@@ -24,14 +24,16 @@ def general_search(initial_state, goal_state, queueing_function):
             print("Maximum Queue Size: " + str(max_q_size))
             print("Frontier: " + str(frontier))
             print("Depth: " + str(node.cost))
+            print(node.state)
             return node
 
-        
+        state = tuple(tuple(row) for row in node.state)
+
         operators = ["left", "right", "up", "down"]
-        if node not in seen:
-            q.heappush(seen, node)
-            neighbors = expand(node, operators)
+        if state not in seen:
+            seen.add(state)
             expanded_nodes += 1
+            neighbors = expand(node, operators)
             for neighbor in neighbors:
                 if neighbor not in seen:
                     queueing_function(nodes, neighbor)
@@ -39,6 +41,7 @@ def general_search(initial_state, goal_state, queueing_function):
 # Expand function returns an array of valid neighbors for the node passed in
 def expand(node, operators):
     neighbors = []
+    r, c = -1, -1
     for i in range(3):
         for j in range(3):
             if node.state[i][j] == 0:
