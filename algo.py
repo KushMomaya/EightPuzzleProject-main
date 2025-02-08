@@ -26,17 +26,23 @@ def general_search(initial_state, goal_state, queueing_function):
             print("Depth: " + str(node.cost))
             print(node.state)
             return node
+            
 
         state = tuple(tuple(row) for row in node.state)
 
         operators = ["left", "right", "up", "down"]
+
         if state not in seen:
             seen.add(state)
             expanded_nodes += 1
             neighbors = expand(node, operators)
             for neighbor in neighbors:
-                if neighbor not in seen:
+                neighbor_check = tuple(tuple(row) for row in neighbor.state)
+                if neighbor_check not in seen:
                     queueing_function(nodes, neighbor)
+                    #debug code for tracing
+                    #print("curr: ", len(nodes))
+                    #print("currnode: ", neighbor.state, neighbor.cost)
                                   
 # Expand function returns an array of valid neighbors for the node passed in
 def expand(node, operators):
