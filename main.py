@@ -112,6 +112,5 @@ def main():
         general_search(initial_state, goal_state, astar_manhattan)
     else:
         print("Invalid Input")
-    #some display of solution
 
 main()

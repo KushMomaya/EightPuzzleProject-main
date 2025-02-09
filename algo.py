@@ -1,33 +1,43 @@
 import heapq as q
 from node import Node
+import time
 
 # General Search Template
 def general_search(initial_state, goal_state, queueing_function):
+    start = time.time() # Keep track of time
+
+    #Initial Queue Setup
     nodes = []
     initial_node = Node(state=initial_state)
     q.heappush(nodes, initial_node)
+
+    #Informational Variables
     expanded_nodes = 0
     max_q_size = 0
     frontier = 1
-    seen = set()
+
+    seen = set() # Keep track of repeated states
 
     while nodes:
         if len(nodes) == 0:
             return "failure"
 
+        #Update Information
         max_q_size = max(max_q_size, len(nodes))
         node = q.heappop(nodes)
         frontier = len(nodes)
 
         if node.state == goal_state:
-            print("Nodes Expanded: " + str(expanded_nodes))
-            print("Maximum Queue Size: " + str(max_q_size))
-            print("Frontier: " + str(frontier))
-            print("Depth: " + str(node.cost))
-            print(node.state)
-            return node
+            end = time.time()
+            #print("Nodes Expanded: " + str(expanded_nodes))
+            #print("Maximum Queue Size: " + str(max_q_size))
+            #print("Frontier: " + str(frontier))
+            #print("Depth: " + str(node.cost))
+            #print("Time Taken: " + str(end - start))
+            #print(node.state) check correct answer output
+            return node, expanded_nodes, max_q_size, node.cost, end - start
             
-
+        # Needs to be immutable to be added to the set
         state = tuple(tuple(row) for row in node.state)
 
         operators = ["left", "right", "up", "down"]
