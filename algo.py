@@ -29,11 +29,11 @@ def general_search(initial_state, goal_state, queueing_function):
 
         if node.state == goal_state:
             end = time.time()
-            #print("Nodes Expanded: " + str(expanded_nodes))
-            #print("Maximum Queue Size: " + str(max_q_size))
-            #print("Frontier: " + str(frontier))
-            #print("Depth: " + str(node.cost))
-            #print("Time Taken: " + str(end - start))
+            print("Nodes Expanded: " + str(expanded_nodes))
+            print("Maximum Queue Size: " + str(max_q_size))
+            print("Frontier: " + str(frontier))
+            print("Depth: " + str(node.cost))
+            print("Time Taken: " + str(end - start))
             #print(node.state) check correct answer output
             return node, expanded_nodes, max_q_size, node.cost, end - start
             
