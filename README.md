@@ -22,17 +22,17 @@ A* with the **Manhattan Distance heuristic** calculates the sum of the horizonta
 ### Nodes Expanded vs Depth
 A key performance measure is the number of nodes expanded at various depths. The graph below compares each algorithm's performance:
 
-![Nodes Expanded](#)
+![Nodes Expanded](envd.png)
 
 ### Maximum Queue Size vs Depth
 The maximum queue size indicates the space complexity of each algorithm:
 
-![Maximum Queue Size](#)
+![Maximum Queue Size](mqsvd.png)
 
 ### Runtime vs Depth
 Execution time is critical in evaluating algorithm efficiency:
 
-![Runtime](#)
+![Runtime](rvd.png)
 
 ## Conclusion
 A* with the Manhattan Distance heuristic consistently outperforms the other algorithms in terms of runtime, expanded nodes, and queue size. While both A* algorithms are heuristic-based, their performance differences highlight the importance of heuristic selection.
